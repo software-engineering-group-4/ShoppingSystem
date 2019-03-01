@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/key');
+const passport = require('passport');
 const router = express.Router();
 
 //Load User model
@@ -67,7 +68,7 @@ router.post('/login', (req, res) => {
 				if (isMatch) {
 					// User Matched
 
-					const payload = { id: user.id, name: user.name, avatar: user.avatar } // Create JWT Payload
+					const payload = { id: user.id, name: user.name} // Create JWT Payload
 
 					// Sign Token
 
@@ -86,6 +87,18 @@ router.post('/login', (req, res) => {
 					return res.status(400).json(errors);
 				}
 			})
+		});
+});
+
+// @route GET api/users/current
+// @desc Return current user
+// access Private
+router.get('/current', passport.authenticate('jwt', { session: false }), 
+	(req, res) => {
+		res.json({
+			id: req.user.id,
+			name: req.user.name,
+			email: req.user.email
 		});
 });
 
