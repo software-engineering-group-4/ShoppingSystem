@@ -8,6 +8,9 @@ const router = express.Router();
 //Load User model
 const User = require('../../models/User');
 
+//Load Input Validation
+const validateRegisterInput = require('../../validation/register');
+
 
 // @route GET api/users/test
 // @desc Tests user route
@@ -18,7 +21,12 @@ router.get('/test', (req, res) => res.json({msg: "User works"}));
 // @desc Register user
 // access Public
 router.post('/register', (req, res) => {
+	const { errors, isValid } = validateRegisterInput(req.body);
 
+	//Check validation
+	if (!isValid) {
+		return res.status(400).json(errors);
+	}
 
 	User.findOne({ email: req.body.email })
 	.then(user => {
