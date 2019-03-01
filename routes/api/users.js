@@ -10,7 +10,7 @@ const User = require('../../models/User');
 
 //Load Input Validation
 const validateRegisterInput = require('../../validation/register');
-
+const validateLoginInput = require('../../validation/login');
 
 // @route GET api/users/test
 // @desc Tests user route
@@ -58,6 +58,12 @@ router.post('/register', (req, res) => {
 // @desc Login User / Returning JWT Token
 // access Public
 router.post('/login', (req, res) => {
+	const { errors, isValid } = validateLoginInput(req.body);
+
+	//Check validation
+	if (!isValid) {
+		return res.status(400).json(errors);
+	}
 
 	const email = req.body.email;
 	const password = req.body.password;
