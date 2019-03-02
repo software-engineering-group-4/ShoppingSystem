@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom'
 
 export class Login extends Component{
   state = {
-    username: '',
+    email: '',
     password: '',
     loginError: false,
     redirect: false,
@@ -17,17 +17,26 @@ export class Login extends Component{
     })
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const loginInfo = {
-      username: this.state.username,
-      password: this.state.password,
+
+    handleSubmit = (e) => {
+      e.preventDefault()
+      const loginInfo = {
+        email: this.state.email,
+        password: this.state.password,
+      }
+      axios.post(`/api/users/login`, loginInfo)
+        .then(res => {
+          if (res.data==='incorrect'){
+            this.setState({
+              loginError: true
+            });
+          }
+          else{
+            //localStorage.setItem("key", res.data);
+            this.props.history.push("/");
+          }
+        })
     }
-    this.state.ws.send(loginInfo)
-    this.state.ws.onmessage = (event) => {
-      console.log(event.data)
-    }
-  }
 
 
 
@@ -41,8 +50,8 @@ export class Login extends Component{
           <div className="col s12 white z-depth-">
             <form>
               <div className="input-field">
-                <input type="text" id="username" value={this.state.username} onChange={this.handleChange} />
-                <label htmlFor="username">Username</label>
+                <input type="text" id="email" value={this.state.email} onChange={this.handleChange} />
+                <label htmlFor="email">Email</label>
               </div>
               <div className="input-field">
                 <input type="password" id="password" value={this.state.password} onChange={this.handleChange} />

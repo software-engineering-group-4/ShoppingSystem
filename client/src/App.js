@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Navbar from './components/Navbar'
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Login from './components/Login'
+import Home from './components/Home'
+import Signup from './components/Signup'
 import axios from 'axios'
 
 class App extends Component {
@@ -37,7 +39,9 @@ class App extends Component {
               <div className="col s12">
                 <div className="App">
                 <Switch>
+                  <Route exact path ='/' component={Home} />
                   <Route path ='/login' component={Login} />
+                  <Route path ='/signup' component={Signup} />
                 </Switch>
                 </div>
               </div>
