@@ -26,6 +26,7 @@ export class Login extends Component{
       }
       axios.post(`/api/users/login`, loginInfo)
         .then(res => {
+          console.log("Sign in success")
           if (res.data==='incorrect'){
             this.setState({
               loginError: true

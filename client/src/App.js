@@ -1,54 +1,54 @@
 import React, { Component } from 'react';
-import Navbar from './components/Navbar'
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Login from './components/Login'
-import Home from './components/Home'
-import Signup from './components/Signup'
-import axios from 'axios'
+import { BrowserRouter as Router, Route} from 'react-router-dom';
+// import Home from './components/Home'
+// import axios from 'axios'
+
+import NavBar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
+import Landing from './components/layout/Landing';
+import Register from './components/auth/Register';
+import Login from './components/auth/Login';
+
+import './App.css';
 
 class App extends Component {
 
-  state: {
-    loggedIn: false
-  }
 
-  componentWillMount(){
-    axios.post(`/auth`, {"token" : localStorage.getItem("key")}).then(res => {
-      if (res.data === "invalid"){
-        this.setState({loggedIn: false})
-      }
-      else if (res.data === "clear"){
-        localStorage.removeItem("key")
-        this.setState({loggedIn: false})
-      }
-      else if (res.data === "valid"){
-        console.log('success')
-        this.setState({loggedIn: true})
-        console.log(this.state)
-      }
-    })
-  }
+
+  // state: {
+  //   loggedIn: false
+  // }
+
+  // componentWillMount(){
+  //   axios.post(`/auth`, {"token" : localStorage.getItem("key")}).then(res => {
+  //     if (res.data === "invalid"){
+  //       this.setState({loggedIn: false})
+  //     }
+  //     else if (res.data === "clear"){
+  //       localStorage.removeItem("key")
+  //       this.setState({loggedIn: false})
+  //     }
+  //     else if (res.data === "valid"){
+  //       console.log('success')
+  //       this.setState({loggedIn: true})
+  //       console.log(this.state)
+  //     }
+  //   })
+  // }
 
   render() {
     return (
-      <div className="App">
-        <Navbar />
-        <BrowserRouter>
-          <div className="container">
-            <div className="row">
-              <div className="col s12">
-                <div className="App">
-                <Switch>
-                  <Route exact path ='/' component={Home} />
-                  <Route path ='/login' component={Login} />
-                  <Route path ='/signup' component={Signup} />
-                </Switch>
-                </div>
-              </div>
-            </div>
+      <Router>
+        <div className="App">
+          <NavBar />
+          <Route exact path="/" component={Landing} />
+          <div className = "container">
+            <Route exact path ="/register" component = {Register} />
+            <Route exact path ="/login" component = {Login} />
           </div>
-        </BrowserRouter>
+          <Footer />
         </div>
+      </Router>
     );
   }
 }
