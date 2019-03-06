@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import classnames from 'classnames';
+
 
 
 class Login extends Component {
@@ -37,6 +39,8 @@ class Login extends Component {
 	}
 
   render() {
+
+    const { errors } = this.state;
     return (
        <div className="login">
     <div className="container">
@@ -48,21 +52,29 @@ class Login extends Component {
             <div className="form-group">
               <input 
               type="email" 
-              className="form-control form-control-lg" 
+              className={classnames ('form-control form-control-lg', {
+                'is-invalid' : errors.email
+                })} 
               placeholder="Email Address" 
               name="email" 
               value = {this.state.email}
               onChange = {this.onChange}
               />
+              {errors.email && (
+                <div className = "invalid-feedback"> {errors.email} </div> )}
             </div>
             <div className="form-group">
               <input 
               type="password" 
-              className="form-control form-control-lg" 
+              className={classnames ('form-control form-control-lg', {
+                'is-invalid' : errors.password
+              })} 
               placeholder="Password" 
               name="password" 
               value = {this.state.password}
               onChange = {this.onChange}/>
+              {errors.password && (
+                <div className = "invalid-feedback"> {errors.password} </div> )}
             </div>
             <input type="submit" className="btn btn-info btn-block mt-4" />
           </form>

@@ -50,12 +50,28 @@ export class Login extends Component{
         <div className="row z-depth-2">
           <div className="col s12 white z-depth-">
             <form>
-              <div className="input-field">
-                <input type="text" id="email" value={this.state.email} onChange={this.handleChange} />
+              <div className="form-group">
+                <input 
+                type="text" 
+                id="email" 
+                value={this.state.email}
+                className={classnames ('form-control form-control-lg', {
+                'is-invalid' : errors.name
+              })} 
+                onChange={this.handleChange} />
+                {errors.email && (
+                <div className = "invalid-feedback"> {errors.email} </div> )}
                 <label htmlFor="email">Email</label>
               </div>
-              <div className="input-field">
-                <input type="password" id="password" value={this.state.password} onChange={this.handleChange} />
+              <div className="form-group">
+                <input 
+                type="password" 
+                id="password" 
+                value={this.state.password}
+                className={classnames ('form-control form-control-lg', {
+                'is-invalid' : errors.password
+              })} 
+                onChange={this.handleChange} />
                 <label htmlFor="password">Password</label>
               </div>
             </form>
