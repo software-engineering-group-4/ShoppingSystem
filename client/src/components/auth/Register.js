@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import {connect} from 'react-redux';
 import { registerUser } from '../../actions/authActions';
+import SelectListGroup from '../common/SelectListGroup';
 
 class Register extends Component {
 	constructor() {
@@ -13,6 +14,7 @@ class Register extends Component {
 			email: '',
 			password: '',
 			password2: '',
+      userType: '',
 			errors: {}
 		}
 
@@ -41,6 +43,7 @@ class Register extends Component {
 		const newUser = {
 			name: this.state.name,
 			email: this.state.email,
+      userType: this.state.userType,
 			password: this.state.password,
 			password2: this.state.password2
 		}
@@ -49,6 +52,12 @@ class Register extends Component {
 	}
 
   render() {
+
+    const user_roles = [
+      { label: 'Select your role'},
+      { label: 'Customer', value: 'Customer' },
+      { label: 'Admin', value: 'Admin' }
+    ];
 
   	const { errors } = this.state;
     return (
@@ -113,7 +122,18 @@ class Register extends Component {
               {errors.password2 && (
                	<div className = "invalid-feedback"> {errors.password2} </div> )}
             </div>
-            <input type="submit" className="btn btn-info btn-block mt-4" />
+            <SelectListGroup
+                  placeholder="User Roles"
+                  name="userType"
+                  value={this.state.userType}
+                  onChange={this.onChange}
+                  options={user_roles}
+                  error={errors.status}
+                  info="Select User Role"
+                />
+            <input 
+            type="submit" 
+            className="btn btn-info btn-block mt-4" />
           </form>
         </div>
       </div>

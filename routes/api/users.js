@@ -39,6 +39,7 @@ router.post('/register', (req, res) => {
 			const newUser = new User({
 				name: req.body.name,
 				email: req.body.email,
+				userType: req.body.userType,
 				password: req.body.password
 			});
 
@@ -83,7 +84,12 @@ router.post('/login', (req, res) => {
 				if (isMatch) {
 					// User Matched
 
-					const payload = { id: user.id, name: user.name, avatar: user.avatar} // Create JWT Payload
+					const payload = { 
+					id: user.id, 
+					name: user.name,
+					userType: user.userType, 
+					avatar: user.avatar} 
+					 // Create JWT Payload
 
 					// Sign Token
 
