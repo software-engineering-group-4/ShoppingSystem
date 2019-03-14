@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Items from '../items/Items';
 
 class Dashboard extends Component {
 
@@ -17,6 +18,9 @@ class Dashboard extends Component {
       userContent = (
         <div className="btn-group mb-4" role="group">
           <div className="col-md-12">
+           <div className="row">
+              <Items />
+            </div>
             <div className="row">
             </div>
           </div>
@@ -26,6 +30,9 @@ class Dashboard extends Component {
       userContent = (
          <div className="btn-group mb-4" role="group">
           <div className="col-md-12">
+          <div className="row">
+              <Items />
+            </div>
             <div className="row">
               <Link to="/add-item" className="btn btn-light">
                 <i className="fas fa-hand-holding-usd text-secondary mr-1" />
