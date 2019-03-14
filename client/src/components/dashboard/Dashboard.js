@@ -11,7 +11,6 @@ class Dashboard extends Component {
 
   render() {
     const { user } = this.props.auth;
-    console.log('test Dashboard');
     let userContent;
 
     if (user.userType === 'Customer') {

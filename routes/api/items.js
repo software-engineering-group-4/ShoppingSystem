@@ -23,6 +23,8 @@ router.get('/categories', (req, res) => {
   Category.find()
     .sort({ date: -1 })
     .then(categories => {
+      console.log("after getting back");
+      console.log(categories);
       res.json(categories);
     })
     .catch(err =>
