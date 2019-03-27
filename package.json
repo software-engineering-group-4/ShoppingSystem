@@ -8,7 +8,8 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "shop": "concurrently \"npm run server\" \"npm run client\""
+    "shop": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "mocha"
   },
   "author": "An Nguyen",
   "license": "MIT",
@@ -26,6 +27,7 @@
     "validator": "^10.11.0"
   },
   "devDependencies": {
+    "mocha": "^6.0.2",
     "nodemon": "^1.18.10"
   }
 }
