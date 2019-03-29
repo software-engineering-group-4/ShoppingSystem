@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
+//import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import TextFieldGroup from '../common/TextFieldGroup';
 import SelectListGroup from '../common/SelectListGroup';
@@ -40,8 +40,6 @@ class AddItem extends Component {
       category: this.state.category,
       value: this.state.value
     };
-    console.log('adding item on submit');
-    console.log(itemData);
     this.props.addItem(itemData, this.props.history);
   }
 

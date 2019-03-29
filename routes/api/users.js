@@ -29,7 +29,8 @@ router.post('/register', (req, res) => {
 		return res.status(400).json(errors);
 	}
 
-	User.findOne({ email: req.body.email })
+	User
+	.findOne({ email: req.body.email })
 	.then(user => {
 		if (user) {
 			errors.email = 'Email already exists';
@@ -54,9 +55,11 @@ router.post('/register', (req, res) => {
 			})
 		}
 	})
+
+
 });
 
-// @route GET api/users/login
+// @route POST api/users/login
 // @desc Login User / Returning JWT Token
 // access Public
 router.post('/login', (req, res) => {

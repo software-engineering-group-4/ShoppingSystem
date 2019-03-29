@@ -16,7 +16,7 @@ class Items extends Component {
   }
 
   render() {
-    const { items, loading } = this.props.item;
+    const { items } = this.props.item;
     // const items = this.props.item.item;
     let itemContent;
     let itemValues = [];

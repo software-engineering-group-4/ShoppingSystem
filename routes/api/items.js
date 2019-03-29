@@ -36,11 +36,9 @@ router.get('/categories', (req, res) => {
 // @desc    Get items
 // @access  Public
 router.get('/', (req, res) => {
-  console.log('get Items backend');
   Item.find()
     .sort({ date: -1 })
     .then(items => {
-      console.log(JSON.stringify(items));
       res.json(items);
     })
     .catch(err => res.status(404).json({ noitemsfound: 'No items found' }));

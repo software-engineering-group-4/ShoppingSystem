@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+// import { connect } from 'react-redux';
+// import classnames from 'classnames';
+//import { Link } from 'react-router-dom';
 
 class ItemItem extends Component {
   render() {
