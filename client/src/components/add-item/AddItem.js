@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import TextFieldGroup from '../common/TextFieldGroup';
 import SelectListGroup from '../common/SelectListGroup';
 import { addItem, getCategories } from '../../actions/itemActions';
+import {InputGroup, DropdownButton, Image, Row, Col, FormControl, Button} from 'react-bootstrap';
+import axios from 'axios';
 
 class AddItem extends Component {
   constructor() {
@@ -15,6 +17,8 @@ class AddItem extends Component {
       description: '',
       category: '',
       value: 0.0,
+      images:[{}],
+      img:'',
       errors: {}
     };
 
@@ -23,6 +27,13 @@ class AddItem extends Component {
   }
   componentDidMount() {
     this.props.getCategories();
+     axios.get('api/items/images')
+      .then(function(response){
+        this.setState({images:response.data});
+      }.bind(this))
+      .catch(function(err){
+        this.setState({images:'error loading image files from the server', img:''})
+      }.bind(this))
   }
 
   componentWillReceiveProps(nextProps) {
@@ -38,8 +49,10 @@ class AddItem extends Component {
       name: this.state.name,
       description: this.state.description,
       category: this.state.category,
+      images: this.state.img,
       value: this.state.value
     };
+    console.log(itemData)
     this.props.addItem(itemData, this.props.history);
   }
 
@@ -47,9 +60,21 @@ class AddItem extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+   handleSelect(img){
+    this.setState({
+      img: '/images/'+ img
+    })
+  }
+
   render() {
     const { errors } = this.state;
 
+    const imgList = this.state.images.map(function(imgArr, i){
+      return(
+        <DropdownButton key={i} eventKey={imgArr.name}
+          onClick={this.handleSelect.bind(this, imgArr.name)}>{imgArr.name}</DropdownButton>
+      )
+    }, this)
 
     // Select options for status
 
@@ -71,14 +96,16 @@ class AddItem extends Component {
     }
 
     return (
+        <Row>
+      <Col xs={12} sm={6}>
       <div className="add-item-">
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
               <h1 className="display-4 text-center">Add New Item</h1>
-
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
+
                 <TextFieldGroup
                   placeholder="* Name"
                   name="name"
@@ -87,6 +114,7 @@ class AddItem extends Component {
                   error={errors.name}
                   info="Item Name"
                 />
+
                 <TextFieldGroup
                   placeholder="* Detail Information"
                   name="description"
@@ -126,6 +154,22 @@ class AddItem extends Component {
           </div>
         </div>
       </div>
+      </Col>
+
+      <Col xs={12} sm={6}>
+              <InputGroup>
+                <FormControl type="text" ref="image" value={this.state.img} />
+                <DropdownButton
+                  componentClass={InputGroup.Button}
+                  id="input-dropdown-addon"
+                  title="Select an image"
+                  bsStyle="primary">
+                  {imgList}
+                </DropdownButton>
+              </InputGroup>
+              <Image src={this.state.img} responsive/>
+      </Col>
+        </Row>
     );
   }
 }
