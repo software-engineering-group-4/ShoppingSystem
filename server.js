@@ -37,4 +37,6 @@ app.use('/api/cart', cart);
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
+var server = app.listen(port, () => console.log(`Server running on port ${port}`));
+
+module.exports = server

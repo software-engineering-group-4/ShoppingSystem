@@ -8,6 +8,7 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
+    "test": "mocha --full-trace",
     "shop": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "An Nguyen",
@@ -15,6 +16,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
+    "chai-http": "^4.2.1",
     "classnames": "^2.2.6",
     "concurrently": "^4.1.0",
     "express": "^4.16.4",
@@ -26,6 +28,10 @@
     "validator": "^10.11.0"
   },
   "devDependencies": {
-    "nodemon": "^1.18.10"
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^6.0.2",
+    "nodemon": "^1.18.10",
+    "should": "^13.2.3"
   }
 }

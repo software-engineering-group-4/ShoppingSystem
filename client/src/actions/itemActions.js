@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import {
   GET_ERRORS,
-  ADD_ITEM,
+ // ADD_ITEM,
   CLEAR_ERRORS,
   GET_ITEM,
   GET_ITEMS,

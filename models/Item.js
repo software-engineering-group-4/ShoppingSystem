@@ -20,6 +20,10 @@ const ItemSchema = new Schema({
     type: Number,
     required: true
   },
+  images: {
+    type: String,
+    require: true
+  }
   
 });
 
