@@ -17,12 +17,13 @@ class Items extends Component {
 
   render() {
     const { items, loading } = this.props.item;
+    const { user } = this.props.auth;
     // const items = this.props.item.item;
     let itemContent;
     let itemValues = [];
       if (items.length > 0) {
         itemContent = items.map(item => (
-          <ItemItem key={item._id} item={item} />
+          <ItemItem key={item._id} item={item} auth={user} />
         ));
         items.forEach(item =>
           itemValues.push({ key: item._id, value: item.description })
@@ -30,7 +31,7 @@ class Items extends Component {
       } else {
         itemContent = <h4> NO items available...</h4>;
       }
-    
+    console.log("Item"+user.name)
 
     return (
       <div className="items">

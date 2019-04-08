@@ -13,7 +13,7 @@ class Dashboard extends Component {
   render() {
     const { user } = this.props.auth;
     let userContent;
-
+    console.log(user)
     if (user.userType === 'Customer') {
       userContent = (
         <div className="btn-group mb-4" role="group">

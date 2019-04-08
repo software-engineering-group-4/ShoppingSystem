@@ -23,6 +23,11 @@ const UserSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
+	cart: [{
+		itemName: String,
+		itemPrice: Number,
+		foodQuantity: Number
+	}]
 });
 
 module.exports = User = mongoose.model('users', UserSchema)
