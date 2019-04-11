@@ -7,6 +7,7 @@ const users = require('./routes/api/users');
 const posts = require('./routes/api/posts');
 const items = require('./routes/api/items');
 const cart = require('./routes/api/cart');
+const checkout = require('./routes/api/checkout');
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use('/api/users', users);
 app.use('/api/posts', posts);
 app.use('/api/items', items);
 app.use('/api/cart', cart);
+app.use('/api/checkout', checkout);
 
 const port = process.env.PORT || 5000;
 

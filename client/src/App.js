@@ -15,6 +15,8 @@ import Landing from './components/layout/Landing';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
+import Cart from './components/cart/cart';
+import Checkout from './components/cart/checkout';
 import AddItem from './components/add-item/AddItem';
 
 import './App.css';
@@ -80,6 +82,8 @@ class App extends Component {
             <Switch>
                 <PrivateRoute exact path="/dashboard" component={Dashboard} />
                 <PrivateRoute exact path="/add-item" component={AddItem} />
+                <PrivateRoute exact path="/cart" component={Cart} />
+                <PrivateRoute exact path="/checkout" component={Checkout} />
             </Switch>
           </div>
           <Footer />

@@ -36,7 +36,7 @@ router.post('/register', (req, res) => {
 			errors.email = 'Email already exists';
 			return res.status(400).json(errors);
 		} else {
-			
+
 			const newUser = new User({
 				name: req.body.name,
 				email: req.body.email,
@@ -87,19 +87,21 @@ router.post('/login', (req, res) => {
 				if (isMatch) {
 					// User Matched
 
-					const payload = { 
-					id: user.id, 
+					const payload = {
+					id: user.id,
 					name: user.name,
-					userType: user.userType, 
-					avatar: user.avatar} 
+					userType: user.userType,
+					avatar: user.avatar,
+					email: user.email,
+					cart: user.cart}
 					 // Create JWT Payload
 
 					// Sign Token
 
 					jwt.sign(
-						payload, 
-						keys.secretOrKey, 
-						{ expiresIn: 3600 }, 
+						payload,
+						keys.secretOrKey,
+						{ expiresIn: 3600 },
 						(err, token) => {
 							res.json ({
 								success: true,
@@ -117,12 +119,13 @@ router.post('/login', (req, res) => {
 // @route GET api/users/current
 // @desc Return current user
 // access Private
-router.get('/current', passport.authenticate('jwt', { session: false }), 
+router.get('/current', passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		res.json({
 			id: req.user.id,
 			name: req.user.name,
-			email: req.user.email
+			email: req.user.email,
+			cart: req.user.cart
 		});
 });
 

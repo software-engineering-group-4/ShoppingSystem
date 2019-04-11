@@ -86,7 +86,7 @@ class AddItem extends Component {
       categories !== undefined &&
       categories.length > 0
     ) {
-      
+
 
       categories.map(ca => {
         categoryOptions.push({ label: ca.category, value: ca.category });

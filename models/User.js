@@ -26,7 +26,7 @@ const UserSchema = new Schema({
 	cart: [{
 		itemName: String,
 		itemPrice: Number,
-		foodQuantity: Number
+		itemQuantity: Number
 	}]
 });
 
