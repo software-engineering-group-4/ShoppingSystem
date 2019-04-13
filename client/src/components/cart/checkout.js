@@ -72,7 +72,7 @@ class Checkout extends Component {
       <div className="container">
         <div className="row">
           <div className="col-lg-6">
-            <h1 className="display-4 text-center">Shipping Information</h1>
+            <h1 className="display-4 text-center">Order Summary</h1>
             <div className="items">
             <ul>
             {this.state.cart.length<=0 ?
