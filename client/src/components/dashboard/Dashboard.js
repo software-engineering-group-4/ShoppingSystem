@@ -6,10 +6,6 @@ import Items from '../items/Items';
 
 class Dashboard extends Component {
 
-  onDeleteClick(e) {
-    this.props.deleteAccount();
-  }
-
   render() {
     const { user } = this.props.auth;
     let userContent;

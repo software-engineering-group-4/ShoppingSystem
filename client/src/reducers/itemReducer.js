@@ -2,6 +2,7 @@ import {
   GET_ITEM,
   GET_ITEMS,
   ITEM_LOADING,
+  DELETE_ITEM,
   CLEAR_CURRENT_ITEM
 } from '../actions/types';
 
@@ -19,6 +20,12 @@ export default function(state = initialState, action) {
         loading: true
       };
     case GET_ITEM:
+      return {
+        ...state,
+        items: action.payload,
+        loading: false
+      };
+    case DELETE_ITEM:
       return {
         ...state,
         items: action.payload,

@@ -6,6 +6,7 @@ import {
   CLEAR_ERRORS,
   GET_ITEM,
   GET_ITEMS,
+  DELETE_ITEM,
   GET_CATEGORIES,
   ITEM_LOADING,
   CATEGORY_LOADING
@@ -56,6 +57,25 @@ export const getItem = id => dispatch => {
     .then(res =>
       dispatch({
         type: GET_ITEM,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+// Delete Item
+export const deleteItem = id => dispatch => {
+  dispatch(setItemLoading());
+  axios
+    .delete(`/api/items/${id}`)
+    .then(res =>
+      dispatch({
+        type: DELETE_ITEM,
         payload: res.data
       })
     )

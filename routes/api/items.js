@@ -18,6 +18,17 @@ const validateItemInput = require('../../validation/item');
 router.get('/test', (req, res) => res.json({ msg: 'Items Works' }));
 
 
+// @route DELETE api/items/item_id
+// @desc Delete item
+
+router.delete('/:id', (req, res) => {
+  console.log(req.params.id);
+  Item.findOneAndDelete({ _id: req.params.id })
+  .then(() => {
+    res.json({success: true})
+  })
+  .catch(err => res.status(404).json(err))
+})
 
 // @route   Get api/items/images
 // @desc    Get item images
@@ -82,7 +93,7 @@ router.get('/:id', (req, res) => {
 
   // console.log('get with certain ID', req.params.id);
 
-  Item.find({ location: req.params.id })
+  Item.find({ _id: req.params.id })
     .then(items => {
       console.log(items);
       res.json(items);
@@ -115,6 +126,7 @@ router.post('/create', (req, res) => {
 
   newItem.save().then(item => res.json(item));
 });
+
 
 
 

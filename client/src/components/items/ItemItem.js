@@ -42,6 +42,17 @@ class ItemItem extends Component {
       })
     }
   }
+
+  delete = () => {
+
+    axios.delete(`/api/items/${this.props.item._id}`)
+    .then(res => {
+      console.log(res.data)
+      window.location.reload();
+    })
+
+  }
+
   buy = () =>{
     this.setState({
       showModal:true
@@ -68,7 +79,9 @@ class ItemItem extends Component {
         <div className="row">
           <div className="col-lg-9 col-md-5 col-8">
             <h3>{item.name}</h3>
+            <p>{item.description} </p>
             <button type="button" className="btn btn-primary" onClick={this.buy}>Buy</button>
+            <button className="btn btn-danger" onClick={this.delete}>Delete</button>
           </div>
 
           <div className="col-md-7 d-none d-md-block">

@@ -10,10 +10,12 @@ class Items extends Component {
 
     const { user } = this.props.auth;
 
-    if (user.userType === 'Customer') {
+    if (user.userType === 'Customer' || user.userType === 'Admin') {
       this.props.getItems();
     }
   }
+
+
 
   render() {
     const { items, loading } = this.props.item;
@@ -33,11 +35,14 @@ class Items extends Component {
       }
     console.log("Item"+user.name)
 
+    
+
     return (
       <div className="items">
         <div className="container">
           <div className="row">
             <div className="col-md-16">
+              
               <h1 className="display-6 text-left">Grocery</h1>
               {itemContent}
             </div>
