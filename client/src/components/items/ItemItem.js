@@ -73,6 +73,21 @@ class ItemItem extends Component {
   render() {
     const { item } = {...this.props};
     const {auth} = {...this.props};
+    let userContent;
+    if (auth.userType === 'Admin') {
+      userContent = (
+        <div>
+            <button className="btn btn-danger" onClick={this.delete}>Delete</button>
+        </div>
+      );
+    } else {
+      userContent = (
+        <div>
+            <button type="button" className="btn btn-primary" onClick={this.buy}>Buy</button>
+        </div>
+      )
+    }
+
     return (
       <div className="card card-body bg-light mb-4">
 
@@ -80,8 +95,7 @@ class ItemItem extends Component {
           <div className="col-lg-9 col-md-5 col-8">
             <h3>{item.name}</h3>
             <p>{item.description} </p>
-            <button type="button" className="btn btn-primary" onClick={this.buy}>Buy</button>
-            <button className="btn btn-danger" onClick={this.delete}>Delete</button>
+            {userContent}
           </div>
 
           <div className="col-md-7 d-none d-md-block">
