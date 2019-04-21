@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import CartItem from './cartItem';
 import axios from 'axios';
 import classnames from 'classnames';
 
-import { getItem, getItems } from '../../actions/itemActions';
 
 
 class Checkout extends Component {
@@ -53,9 +51,9 @@ class Checkout extends Component {
     const order = this.state
 
     console.log(order)
-    if(order.cart.length!=0){
-      axios.post('/api/checkout/checkout', order).
-      then(res =>{
+    if(order.cart.length!==0){
+      axios.post('/api/checkout/checkout', order)
+      .then(res =>{
         console.log(res.data)
         window.location.replace("http://localhost:3000/dashboard");
       })
@@ -63,7 +61,6 @@ class Checkout extends Component {
   }
 
   render() {
-    const { user } = this.props.auth;
 
     // const items = this.props.item.item;
 

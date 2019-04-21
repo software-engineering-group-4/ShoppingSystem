@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import CartItem from './cartItem';
 import axios from 'axios';
 
-import { getItem, getItems } from '../../actions/itemActions';
-
 
 class Cart extends Component {
 

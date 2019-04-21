@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Image, Col , Row, Modal} from 'react-bootstrap';
+import { Button, Col , Modal} from 'react-bootstrap';
 import axios from 'axios';
 // import { connect } from 'react-redux';
 // import classnames from 'classnames';

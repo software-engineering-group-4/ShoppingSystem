@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Image, Col , Row, Modal} from 'react-bootstrap';
+import { Button , Modal} from 'react-bootstrap';
 import axios from 'axios';
 // import { connect } from 'react-redux';
 // import classnames from 'classnames';
@@ -77,7 +77,6 @@ class CartItem extends Component {
 
   render() {
     const { item } = {...this.props};
-    const {auth} = {...this.props};
     return (
       <div className="card card-body bg-light mb-4">
 

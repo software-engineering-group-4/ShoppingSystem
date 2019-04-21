@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import TextFieldGroup from '../common/TextFieldGroup';
 import SelectListGroup from '../common/SelectListGroup';
 import { addItem, getCategories } from '../../actions/itemActions';
-import {InputGroup, DropdownButton, Image, Row, Col, FormControl, Button} from 'react-bootstrap';
+import {InputGroup, DropdownButton, Image, Row, Col, FormControl} from 'react-bootstrap';
 import axios from 'axios';
 
 class AddItem extends Component {
