@@ -6,6 +6,7 @@ const chaiHttp = require('chai-http');
 const server = require('../server');
 const should = chai.should();
 const validateItemInput = require('../validation/item');
+const validateCheckoutInput = require('../validation/checkout');
 
 //chai.config.includeStack = true;
 chai.use(chaiHttp);
@@ -363,5 +364,92 @@ describe('Cart', () => {
         done();
       });
     });
+  });
+});
+
+
+describe('Checkout', () => {
+  it('should accept valid checkout', () => {
+    let checkout = {
+      email: 'customer@gmail.com',
+      city: 'Atlanta',
+      state: 'GA',
+      street: '1234 Gilmer St',
+      zipcode: '30303'
+    }
+
+    const { errors, isValid } = validateCheckoutInput(checkout)
+    isValid.should.equal(true);
+  });
+
+  it('should error if city is empty', () => {
+    let checkout = {
+      email: 'customer@gmail.com',
+      city: '',
+      state: 'GA',
+      street: '1234 Gilmer St',
+      zipcode: '30303'
+    }
+
+    const { errors, isValid } = validateCheckoutInput(checkout)
+    isValid.should.equal(false);
+    errors.should.have.property('city');
+
+  });
+
+  it('should error if state is empty', () => {
+    let checkout = {
+      email: 'customer@gmail.com',
+      city: 'Atlanta',
+      state: '',
+      street: '1234 Gilmer St',
+      zipcode: '30303'
+    }
+
+    const { errors, isValid } = validateCheckoutInput(checkout)
+    isValid.should.equal(false);
+    errors.should.have.property('state');
+  });
+
+  it('should error if street is empty', () => {
+    let checkout = {
+      email: 'customer@gmail.com',
+      city: 'Atlanta',
+      state: 'GA',
+      street: '',
+      zipcode: '30303'
+    }
+
+    const { errors, isValid } = validateCheckoutInput(checkout)
+    isValid.should.equal(false);
+    errors.should.have.property('street');
+  });
+
+  it('should error if zipcode is empty', () => {
+    let checkout = {
+      email: 'customer@gmail.com',
+      city: 'Atlanta',
+      state: 'GA',
+      street: '1234 Gilmer St',
+      zipcode: ''
+    }
+
+    const { errors, isValid } = validateCheckoutInput(checkout)
+    isValid.should.equal(false);
+    errors.should.have.property('zipcode');
+  });
+
+  it('should error if zipcode is not a number', () => {
+    let checkout = {
+      email: 'customer@gmail.com',
+      city: 'Atlanta',
+      state: 'GA',
+      street: '1234 Gilmer St',
+      zipcode: 'asdf'
+    }
+
+    const { errors, isValid } = validateCheckoutInput(checkout)
+    isValid.should.equal(false);
+    errors.should.have.property('zipcode');
   });
 });
