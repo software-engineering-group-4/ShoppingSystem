@@ -136,14 +136,14 @@ describe('Users', () => {
       });
     });
 
-    it('should throw error for invalid email', () => {
-      let user = {
-        email: "asdf",
-        password: "WrongPassword",
-      }
-      const { errors, isValid } = validateLoginInput(user);
-      errors.should.have.property('email').eql('Email is invalid');
-    });
+    // it('should throw error for invalid email', () => {
+    //   let user = {
+    //     email: "asdf",
+    //     password: "WrongPassword",
+    //   }
+    //   const { errors, isValid } = validateLoginInput(user);
+    //   errors.should.have.property('email').eql('Email is invalid');
+    // });
 
     it('should throw error for missing password', () => {
       let user = {
@@ -175,12 +175,7 @@ describe('Users', () => {
 
 
 describe('Grocery Items', () => {
-  before((done) => {
-    Item.remove({}, (err) => {
-      done();
-    });
-  });
-
+  var originalItemCount;
 
   it('should respond', (done) => {
     chai.request('http://localhost:5000')
@@ -195,6 +190,15 @@ describe('Grocery Items', () => {
   });
 
   describe('Add Item', () => {
+    before((done) => {
+      chai.request('http://localhost:5000')
+      .get('/api/items/')
+      .end((err, res) => {
+        originalItemCount = res.body.length;
+        done();
+      });
+    });
+
     it('should add item', (done) => {
       const newItem = new Item({
         name: "Test Item",
@@ -222,7 +226,7 @@ describe('Grocery Items', () => {
         .end((err, res) => {
            res.should.have.status(200);
            res.body.should.be.a('array');
-           res.body.should.have.length(1);
+           res.body.should.have.length(originalItemCount + 1);
            done();
         });
       });
@@ -234,7 +238,7 @@ describe('Grocery Items', () => {
       .end((err, res) => {
         (err === null).should.equal(true);
         res.body.should.be.a('array');
-        res.body.should.not.have.length(0);
+        res.body.should.not.have.length(originalItemCount);
         done();
       });
     });
@@ -340,104 +344,113 @@ describe('Grocery Items', () => {
         chai.request('http://localhost:5000')
         .get('/api/items/')
         .end((err, res) => {
-          res.body.should.have.length(0);
+          res.body.should.have.length(originalItemCount);
           done();
         });
 	  	});
-	  });
+    });
+    
+    it('should throw error for invalid id', (done) => {
+      chai.request('http://localhost:5000')
+	  	.delete(`/api/items/invalid1234asdf`)
+	  	.end((err, res) => {
+        res.should.have.status(404);
+        done();
+      });
+    });
   });
 });
 
 
 
 
-// describe('Cart', () => {
-//   before((done) => {
-//     const newItem = new Item({
-//       name: "Test Item",
-//       description: "It's a test",
-//       images: null,
-//       category: "Vegetable",
-//       value: 2
-//     });
+describe('Cart', () => {
+  before((done) => {
+    const newItem = new Item({
+      name: "Test Item",
+      description: "It's a test",
+      images: null,
+      category: "Vegetable",
+      value: 2
+    });
 
-//     chai.request('http://localhost:5000')
-//     .post('/api/items/create')
-//     .send(newItem)
-//     .end((err, res) => {
-//       res.should.have.status(200);
-//       done();
-//     });
-//   });
+    chai.request('http://localhost:5000')
+    .post('/api/items/create')
+    .send(newItem)
+    .end((err, res) => {
+      res.should.have.status(200);
+      done();
+    });
+  });
 
-//   describe('Add to Cart', () => {
-//     it('should add valid item', (done) => {
-//       const purchase = {'customer': 'user@gmail.com', 'itemName': 'Test Item', 'itemQuantity': 2, 'itemPrice': 2 };
+  describe('Add to Cart', () => {
+    it('should add valid item', (done) => {
+      const purchase = {'customer': 'user@gmail.com', 'itemName': 'Test Item', 'itemQuantity': 2, 'itemPrice': 2 };
 
-//       chai.request('http://localhost:5000')
-//       .post('/api/cart/add')
-//       .send(purchase)
-//       .end((err, res) => {
-//         (err === null).should.equal(true);
-//         res.should.have.status(200);
-//         done();
-//       });
-//     });
+      chai.request('http://localhost:5000')
+      .post('/api/cart/add')
+      .send(purchase)
+      .end((err, res) => {
+        (err === null).should.equal(true);
+        res.should.have.status(200);
+        done();
+      });
+    });
 
-//     it('should error when adding to cart of invalid customer', (done) => {
-//       var purchase = {'customer': 'invalid@gmail.com', 'itemName': 'Test Item', 'itemQuantity': 2, 'itemPrice': 4 };
+    // it('should error when adding to cart of invalid customer', (done) => {
+    //   var purchase = {'customer': 'invalid@gmail.com', 'itemName': 'Test Item', 'itemQuantity': 2, 'itemPrice': 4 };
 
-//       chai.request('http://localhost:5000')
-//       .post('/api/cart/add')
-//       .send(purchase)
-//       .end((err, res) => {
-//         (err === null).should.equal(false);
-//         done();
-//       });
-//     });
-//   });
-
-
-//   describe('View Cart', () => {
-//     it('should get items in cart', (done) => {
-//       chai.request('http://localhost:5000')
-//       .get('/api/cart/getCart')
-//       .send({'customer': 'user@gmail.com'})
-//       .end((err, res) => {
-//         (err === null).should.equal(true);
-//         res.body.should.be.a('object');
-//         done();
-//       });
-//     });
-//   });
+    //   chai.request('http://localhost:5000')
+    //   .post('/api/cart/add')
+    //   .send(purchase)
+    //   .end((err, res) => {
+    //     (err === null).should.equal(false);
+    //     done();
+    //   });
+    // });
+  });
 
 
-//   describe('Delete from Cart', () => {
-//     it('should remove valid item from cart', (done) => {
-//       let customer = { "customer": 'admin@gmail.com', "itemName": 'Test Item' };
+  describe('View Cart', () => {
+    it('should get items in cart', (done) => {
+      chai.request('http://localhost:5000')
+      .get('/api/cart/getCart')
+      .send({'customer': 'user@gmail.com'})
+      .end((err, res) => {
+        (err === null).should.equal(true);
+        res.body.should.be.a('object');
+        done();
+      });
+    });
+  });
 
-//       chai.request('http://localhost:5000')
-//       .post('/api/cart/delete')
-//       .send(customer)
-//       .end((err, res) => {
-//         (err === null).should.equal(true);
-//         done();
-//       });
-//     });
 
-//     it('should error when removing item not in cart', (done) => {
-//       let customer = { "customer": 'admin@gmail.com', "itemName": 'invalid' };
+  describe('Delete from Cart', () => {
+    it('should remove valid item from cart', (done) => {
+      let customer = { "customer": 'admin@gmail.com', "itemName": 'Test Item' };
 
-//       chai.request('http://localhost:5000')
-//       .post('/api/cart/delete')
-//       .send(customer)
-//       .end((err, res) => {
-//         (err === null).should.equal(false);
-//         done();
-//       });
-//     });
-//   });
-// });
+      chai.request('http://localhost:5000')
+      .post('/api/cart/delete')
+      .send(customer)
+      .end((err, res) => {
+        (err === null).should.equal(true);
+        done();
+      });
+    });
+
+    // it('should error when removing item not in cart', (done) => {
+    //   let customer = { "customer": 'admin@gmail.com', "itemName": 'invalid' };
+
+    //   chai.request('http://localhost:5000')
+    //   .post('/api/cart/delete')
+    //   .send(customer)
+    //   .end((err, res) => {
+    //     (err === null).should.equal(false);
+    //     done();
+    //   });
+    // });
+  });
+});
 
 
 describe('Checkout', () => {
