@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
+const Item = require('../models/Item');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../server');
@@ -11,7 +12,7 @@ chai.use(chaiHttp);
 
 //clear database before each test
 describe('Users', () => {
-  beforeEach((done) => {
+  before((done) => {
     User.remove({}, (err) => {
       done();
     });
@@ -48,7 +49,6 @@ describe('Users', () => {
         userType: "User"
       }
       chai.request('http://localhost:5000')
-      //chai.request(server)
       .post('/api/users/register')
       .send(user)
       .end((err, res) => {
@@ -103,6 +103,13 @@ describe('Users', () => {
 
 
 describe('Grocery Items', () => {
+  before((done) => {
+    Item.remove({}, (err) => {
+      done();
+    });
+  });
+
+
   it('should respond', (done) => {
     chai.request('http://localhost:5000')
     .get('/api/items/test')
@@ -121,7 +128,7 @@ describe('Grocery Items', () => {
         name: "Test Item",
         description: "It's a test",
         images: null,
-        category: "asdf",
+        category: "Vegetable",
         value: 2
       });
 
@@ -137,7 +144,15 @@ describe('Grocery Items', () => {
         res.body.should.have.property('images').eql(newItem.images);
         res.body.should.have.property('category').eql(newItem.category);
         res.body.should.have.property('value').eql(newItem.value);
-        done();
+        
+        chai.request('http://localhost:5000')
+        .get('/api/items/')
+        .end((err, res) => {
+           res.should.have.status(200);
+           res.body.should.be.a('array');
+           res.body.should.have.length(1);
+           done();
+        });
       });
     });
 
@@ -223,35 +238,76 @@ describe('Grocery Items', () => {
   });
 
 
+  var validItem;
+
   describe('Get Items', () => {
     it('should get items', (done) => {
       chai.request('http://localhost:5000')
-      .get('/')
+      .get('/api/items/')
       .end((err, res) => {
-        (err === null).should.equal(true);
-        res.should.have.status(404);
-        res.body.should.be.a('object');
+		    (err === null).should.equal(true);
+        res.should.have.status(200);
+		    res.body.should.be.a('array');
+		    res.body.should.not.have.length(0);
+		    validItem = res.body[0];
         done();
       });
-    })
-  })
+    });
+  });
+
+
+
+  describe('Delete Item', () => {
+	  it('should delete valid item', (done) => {
+	  	chai.request('http://localhost:5000')
+	  	.delete(`/api/items/${validItem._id}`)
+	  	.end((err, res) => {
+        (err === null).should.equal(true);
+        res.should.have.status(200);
+
+        chai.request('http://localhost:5000')
+        .get('/api/items/')
+        .end((err, res) => {
+          res.body.should.have.length(0);
+          done();
+        });
+	  	});
+	  });
+  });
 });
 
 
 
 
 describe('Cart', () => {
+  before((done) => {
+    const newItem = new Item({
+      name: "Test Item",
+      description: "It's a test",
+      images: null,
+      category: "Vegetable",
+      value: 2
+    });
+
+    chai.request('http://localhost:5000')
+    .post('/api/items/create')
+    .send(newItem)
+    .end((err, res) => {
+      res.should.have.status(200);
+      done();
+    });
+  });
+
   describe('Add to Cart', () => {
     it('should add valid item', (done) => {
-      const item = {'customer': 'user@gmail.com', 'itemName': 'Test Item', 'itemQuantity': 2, 'itemPrice': 4 };
+      const purchase = {'customer': 'admin@gmail.com', 'itemName': 'Test Item', 'itemQuantity': 2, 'itemPrice': 2 };
 
       chai.request('http://localhost:5000')
       .post('/api/cart/add')
-      .send(item)
+      .send(purchase)
       .end((err, res) => {
         (err === null).should.equal(true);
         res.should.have.status(200);
-        done();
       });
     });
 
@@ -263,7 +319,6 @@ describe('Cart', () => {
       .send(purchase)
       .end((err, res) => {
         (err === null).should.equal(false);
-        console.log(err);
         done();
       });
     });
@@ -272,12 +327,10 @@ describe('Cart', () => {
 
   describe('View Cart', () => {
     it('should get items in cart', (done) => {
-      let body = { 'customer': 'user@gmail.com' };
       chai.request('http://localhost:5000')
       .get('/api/cart/getCart')
-      .send(body)
+      .send({'customer': 'admin@gmail.com'})
       .end((err, res) => {
-        console.log(res.body);
         (err === null).should.equal(true);
         res.body.should.be.a('object');
         done();
@@ -294,8 +347,6 @@ describe('Cart', () => {
       .post('/api/cart/delete')
       .send(customer)
       .end((err, res) => {
-        console.log(err);
-        console.log(res.body);
         (err === null).should.equal(true);
         done();
       });
@@ -308,8 +359,6 @@ describe('Cart', () => {
       .post('/api/cart/delete')
       .send(customer)
       .end((err, res) => {
-        console.log(err);
-        console.log(res.body);
         (err === null).should.equal(false);
         done();
       });
