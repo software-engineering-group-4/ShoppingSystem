@@ -11,6 +11,10 @@ module.exports = function validateItemInput(data) {
   data.category = !isEmpty(data.category) ? data.category : '';
   data.value = !isEmpty(data.value) ? data.value : '';
 
+  if (data.value < 0) {
+    errors.value = 'Value must be nonnegative';
+  }
+
   if (Validator.isEmpty(data.name)) {
     errors.name = 'Name field is required';
   }
