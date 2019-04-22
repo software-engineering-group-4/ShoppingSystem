@@ -145,6 +145,15 @@ describe('Users', () => {
       errors.should.have.property('email').eql('Email is invalid');
     });
 
+    it('should throw error for missing password', () => {
+      let user = {
+        email: "admin@gmail.com",
+        password: "",
+      }
+      const { errors, isValid } = validateLoginInput(user);
+      errors.should.have.property('password');
+    });
+
 
     it('should login', (done) => {
       let user = {
