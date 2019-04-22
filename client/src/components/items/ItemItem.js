@@ -99,7 +99,7 @@ class ItemItem extends Component {
           </div>
 
           <div className="col-md-7 d-none d-md-block">
-            <h5>Value: {item.value} </h5>
+            <h5>Price: ${item.value} </h5>
           </div>
 
         </div>
